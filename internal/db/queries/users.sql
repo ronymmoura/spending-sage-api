@@ -1,5 +1,4 @@
 -- name: CreateUser :one
-
 INSERT INTO users (
   email,
   full_name

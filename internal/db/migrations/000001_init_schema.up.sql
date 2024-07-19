@@ -16,7 +16,7 @@ CREATE TABLE categories (
   name varchar NOT NULL
 );
 
-CREATE TABLE month (
+CREATE TABLE months (
   id bigserial PRIMARY KEY,
   user_id bigserial NOT NULL,
   date date NOT NULL
@@ -46,7 +46,7 @@ CREATE TABLE fixed_entries (
   category_id int NOT NULL
 );
 
-CREATE TABLE fixed_entries_payment_history (
+CREATE TABLE fixed_entry_payment_history (
   id bigserial PRIMARY KEY,
   entry_id bigserial NOT NULL,
   amount int NOT NULL CHECK (amount > 0),
@@ -55,9 +55,9 @@ CREATE TABLE fixed_entries_payment_history (
 
 CREATE INDEX ON users (email);
 
-ALTER TABLE month ADD FOREIGN KEY (user_id) REFERENCES users (id);
+ALTER TABLE months ADD FOREIGN KEY (user_id) REFERENCES users (id);
 
-ALTER TABLE month_entries ADD FOREIGN KEY (month_id) REFERENCES month (id);
+ALTER TABLE month_entries ADD FOREIGN KEY (month_id) REFERENCES months (id);
 
 ALTER TABLE month_entries ADD FOREIGN KEY (origin_id) REFERENCES origins (id);
 
@@ -71,5 +71,5 @@ ALTER TABLE fixed_entries ADD FOREIGN KEY (origin_id) REFERENCES origins (id);
 
 ALTER TABLE fixed_entries ADD FOREIGN KEY (category_id) REFERENCES categories (id);
 
-ALTER TABLE fixed_entries_payment_history ADD FOREIGN KEY (entry_id) REFERENCES fixed_entries (id);
+ALTER TABLE fixed_entry_payment_history ADD FOREIGN KEY (entry_id) REFERENCES fixed_entries (id);
 

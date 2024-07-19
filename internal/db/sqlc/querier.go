@@ -9,10 +9,14 @@ import (
 )
 
 type Querier interface {
+	CreateMonth(ctx context.Context, arg CreateMonthParams) (Month, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
+	DeleteMonth(ctx context.Context, id int64) error
 	DeleteUser(ctx context.Context, id int64) error
+	GetMonth(ctx context.Context, id int64) (Month, error)
 	GetUser(ctx context.Context, id int64) (User, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
+	ListMonths(ctx context.Context, arg ListMonthsParams) ([]Month, error)
 }
 
 var _ Querier = (*Queries)(nil)
