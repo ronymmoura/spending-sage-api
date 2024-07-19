@@ -1,0 +1,609 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>sage: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go (0.0%)</option>
+				
+				<option value="file1">github.com/ronymmoura/spending-sage-api/internal/api/auth.go (0.0%)</option>
+				
+				<option value="file2">github.com/ronymmoura/spending-sage-api/internal/api/middleware.go (0.0%)</option>
+				
+				<option value="file3">github.com/ronymmoura/spending-sage-api/internal/api/server.go (0.0%)</option>
+				
+				<option value="file4">github.com/ronymmoura/spending-sage-api/internal/api/user.go (0.0%)</option>
+				
+				<option value="file5">github.com/ronymmoura/spending-sage-api/internal/auth/clerk/clerk.go (0.0%)</option>
+				
+				<option value="file6">github.com/ronymmoura/spending-sage-api/internal/db/sqlc/db.go (50.0%)</option>
+				
+				<option value="file7">github.com/ronymmoura/spending-sage-api/internal/db/sqlc/store.go (10.0%)</option>
+				
+				<option value="file8">github.com/ronymmoura/spending-sage-api/internal/db/sqlc/users.sql.go (100.0%)</option>
+				
+				<option value="file9">github.com/ronymmoura/spending-sage-api/internal/util/config.go (100.0%)</option>
+				
+				<option value="file10">github.com/ronymmoura/spending-sage-api/internal/util/random.go (100.0%)</option>
+				
+				<option value="file11">github.com/ronymmoura/spending-sage-api/main.go (0.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package cmd
+
+import (
+        "github.com/ronymmoura/spending-sage-api/internal/api"
+        "github.com/ronymmoura/spending-sage-api/internal/util"
+)
+
+func Run() <span class="cov0" title="0">{
+        config, err := util.LoadConfig(".env")
+        if err != nil </span><span class="cov0" title="0">{
+                panic("Error loading config file")</span>
+        }
+
+        <span class="cov0" title="0">server, err := api.NewServer(config)
+        if err != nil </span><span class="cov0" title="0">{
+                panic("Opa")</span>
+        }
+
+        <span class="cov0" title="0">server.Start(":8080")</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package api
+
+import (
+        "net/http"
+
+        "github.com/gin-gonic/gin"
+        auth "github.com/ronymmoura/spending-sage-api/internal/auth/clerk"
+)
+
+func (server *Server) signIn(ctx *gin.Context) <span class="cov0" title="0">{
+        var event auth.ClerkEvent
+
+        if err := ctx.ShouldBindBodyWithJSON(&amp;event); err != nil </span><span class="cov0" title="0">{
+                ctx.JSON(http.StatusBadRequest, errorResponse(err))
+                return
+        }</span>
+
+        <span class="cov0" title="0">if event.Type == "user.created" </span><span class="cov0" title="0">{
+                auth.CreateUser(event)
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package api
+
+import (
+        "errors"
+        "fmt"
+        "net/http"
+        "strings"
+
+        "github.com/clerk/clerk-sdk-go/v2/jwt"
+        "github.com/clerk/clerk-sdk-go/v2/user"
+        "github.com/gin-gonic/gin"
+)
+
+const (
+        authorizationHeaderKey  = "authorization"
+        authorizationTypeBearer = "bearer"
+        authorizationPayloadKey = "authorization_payload"
+)
+
+func authMiddleware() gin.HandlerFunc <span class="cov0" title="0">{
+        return func(ctx *gin.Context) </span><span class="cov0" title="0">{
+                authorizationHeader := ctx.GetHeader(authorizationHeaderKey)
+
+                if len(authorizationHeader) == 0 </span><span class="cov0" title="0">{
+                        err := errors.New("authorization header is not provided")
+                        ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+                        return
+                }</span>
+
+                <span class="cov0" title="0">fields := strings.Fields(authorizationHeader)
+                if len(fields) &lt; 2 </span><span class="cov0" title="0">{
+                        err := errors.New("invalid authorization header format")
+                        ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+                        return
+                }</span>
+
+                <span class="cov0" title="0">authorizationType := strings.ToLower(fields[0])
+                if authorizationType != authorizationTypeBearer </span><span class="cov0" title="0">{
+                        err := fmt.Errorf("unsupported authorization type %s", authorizationType)
+                        ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+                        return
+                }</span>
+
+                <span class="cov0" title="0">sessionToken := strings.TrimPrefix(fields[1], "Bearer ")
+                claims, err := jwt.Verify(ctx, &amp;jwt.VerifyParams{
+                        Token: sessionToken,
+                })
+
+                if err != nil </span><span class="cov0" title="0">{
+                        ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+                        return
+                }</span>
+
+                <span class="cov0" title="0">usr, err := user.Get(ctx, claims.Subject)
+                if err != nil </span><span class="cov0" title="0">{
+                        ctx.AbortWithStatusJSON(http.StatusInternalServerError, errorResponse(err))
+                        return
+                }</span>
+
+                <span class="cov0" title="0">ctx.Set(authorizationPayloadKey, usr)
+                ctx.Next()</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package api
+
+import (
+        "time"
+
+        "github.com/clerk/clerk-sdk-go/v2"
+        "github.com/gin-contrib/cors"
+        "github.com/gin-gonic/gin"
+        "github.com/ronymmoura/spending-sage-api/internal/util"
+)
+
+type Server struct {
+        router *gin.Engine
+        config util.Config
+}
+
+func NewServer(config util.Config) (server *Server, err error) <span class="cov0" title="0">{
+        clerk.SetKey(config.ClerkKey)
+
+        server = &amp;Server{
+                config: config,
+        }
+
+        server.setupRouter()
+
+        return
+}</span>
+
+func (server *Server) Start(address string) error <span class="cov0" title="0">{
+        return server.router.Run(address)
+}</span>
+
+func (server *Server) setupRouter() <span class="cov0" title="0">{
+        if server.config.Environment == "development" </span><span class="cov0" title="0">{
+                gin.SetMode("debug")
+        }</span> else<span class="cov0" title="0"> {
+                gin.SetMode("release")
+        }</span>
+
+        <span class="cov0" title="0">router := gin.Default()
+
+        router.Use(cors.New(cors.Config{
+                AllowOrigins:     []string{"*"},
+                AllowMethods:     []string{"*"},
+                AllowHeaders:     []string{"*"},
+                ExposeHeaders:    []string{"Content-Length"},
+                AllowCredentials: true,
+                AllowOriginFunc: func(origin string) bool </span><span class="cov0" title="0">{
+                        return origin == "*"
+                }</span>,
+                MaxAge: 12 * time.Hour,
+        }))
+
+        <span class="cov0" title="0">router.POST("auth/signIn", server.signIn)
+
+        protectedRoutes := router.Group("/").Use(authMiddleware())
+
+        protectedRoutes.GET("/user", server.getUser)
+
+        server.router = router</span>
+}
+
+func errorResponse(err error) gin.H <span class="cov0" title="0">{
+        return gin.H{"error": err.Error()}
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package api
+
+import (
+        "net/http"
+
+        _ "github.com/clerk/clerk-sdk-go/v2"
+        _ "github.com/clerk/clerk-sdk-go/v2/jwt"
+        _ "github.com/clerk/clerk-sdk-go/v2/user"
+        "github.com/gin-gonic/gin"
+)
+
+func (server *Server) getUser(ctx *gin.Context) <span class="cov0" title="0">{
+        authPayload := ctx.MustGet(authorizationPayloadKey)
+        ctx.JSON(http.StatusOK, authPayload)
+}</span>
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package auth
+
+import "fmt"
+
+type ClerkEvent struct {
+        Data ClerkUserData `json:"data"`
+        Type string        `json:"type"`
+}
+
+type ClerkUserData struct {
+        ID             string                        `json:"id"`
+        Banned         bool                          `json:"banned"`
+        FirstName      string                        `json:"first_name"`
+        LastName       string                        `json:"last_name"`
+        EmailAddresses []ClerkUserDataEmailAddresses `json:"email_addresses"`
+}
+
+type ClerkUserDataEmailAddresses struct {
+        Email string `json:"email_address"`
+}
+
+func CreateUser(event ClerkEvent) <span class="cov0" title="0">{
+        fmt.Printf("name: %s\n", event.Data.FirstName)
+        fmt.Printf("email: %s\n", event.Data.EmailAddresses[0].Email)
+}</span>
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">// Code generated by sqlc. DO NOT EDIT.
+// versions:
+//   sqlc v1.25.0
+
+package db
+
+import (
+        "context"
+
+        "github.com/jackc/pgx/v5"
+        "github.com/jackc/pgx/v5/pgconn"
+)
+
+type DBTX interface {
+        Exec(context.Context, string, ...interface{}) (pgconn.CommandTag, error)
+        Query(context.Context, string, ...interface{}) (pgx.Rows, error)
+        QueryRow(context.Context, string, ...interface{}) pgx.Row
+}
+
+func New(db DBTX) *Queries <span class="cov8" title="1">{
+        return &amp;Queries{db: db}
+}</span>
+
+type Queries struct {
+        db DBTX
+}
+
+func (q *Queries) WithTx(tx pgx.Tx) *Queries <span class="cov0" title="0">{
+        return &amp;Queries{
+                db: tx,
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package db
+
+import (
+        "context"
+        "fmt"
+
+        "github.com/jackc/pgx/v5/pgxpool"
+)
+
+type Store interface {
+        Querier
+}
+
+type SQLStore struct {
+        connPool *pgxpool.Pool
+        *Queries
+}
+
+func NewStore(connPool *pgxpool.Pool) Store <span class="cov8" title="1">{
+        return &amp;SQLStore{
+                connPool: connPool,
+                Queries:  New(connPool),
+        }
+}</span>
+
+func (store *SQLStore) execTx(ctx context.Context, fn func(*Queries) error) error <span class="cov0" title="0">{
+        tx, err := store.connPool.Begin(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">q := New(tx)
+
+        if err = fn(q); err != nil </span><span class="cov0" title="0">{
+                if rbErr := tx.Rollback(ctx); rbErr != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("transaction error: %v, rollback error: %v", err, rbErr)
+                }</span>
+
+                <span class="cov0" title="0">return err</span>
+        }
+
+        <span class="cov0" title="0">return tx.Commit(ctx)</span>
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">// Code generated by sqlc. DO NOT EDIT.
+// versions:
+//   sqlc v1.25.0
+// source: users.sql
+
+package db
+
+import (
+        "context"
+)
+
+const createUser = `-- name: CreateUser :one
+
+INSERT INTO users (
+  email,
+  full_name
+)
+VALUES (
+  $1,
+  $2
+)
+RETURNING id, email, full_name, created_at
+`
+
+type CreateUserParams struct {
+        Email    string `json:"email"`
+        FullName string `json:"full_name"`
+}
+
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) <span class="cov8" title="1">{
+        row := q.db.QueryRow(ctx, createUser, arg.Email, arg.FullName)
+        var i User
+        err := row.Scan(
+                &amp;i.ID,
+                &amp;i.Email,
+                &amp;i.FullName,
+                &amp;i.CreatedAt,
+        )
+        return i, err
+}</span>
+
+const deleteUser = `-- name: DeleteUser :exec
+DELETE FROM users
+WHERE id = $1
+`
+
+func (q *Queries) DeleteUser(ctx context.Context, id int64) error <span class="cov8" title="1">{
+        _, err := q.db.Exec(ctx, deleteUser, id)
+        return err
+}</span>
+
+const getUser = `-- name: GetUser :one
+SELECT id, email, full_name, created_at
+FROM users
+WHERE id = $1
+LIMIT 1
+`
+
+func (q *Queries) GetUser(ctx context.Context, id int64) (User, error) <span class="cov8" title="1">{
+        row := q.db.QueryRow(ctx, getUser, id)
+        var i User
+        err := row.Scan(
+                &amp;i.ID,
+                &amp;i.Email,
+                &amp;i.FullName,
+                &amp;i.CreatedAt,
+        )
+        return i, err
+}</span>
+
+const getUserByEmail = `-- name: GetUserByEmail :one
+SELECT id, email, full_name, created_at
+FROM users
+WHERE email = $1
+LIMIT 1
+`
+
+func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error) <span class="cov8" title="1">{
+        row := q.db.QueryRow(ctx, getUserByEmail, email)
+        var i User
+        err := row.Scan(
+                &amp;i.ID,
+                &amp;i.Email,
+                &amp;i.FullName,
+                &amp;i.CreatedAt,
+        )
+        return i, err
+}</span>
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package util
+
+import (
+        "fmt"
+
+        "github.com/spf13/viper"
+)
+
+type Config struct {
+        Environment      string `mapstructure:"ENVIRONMENT"`
+        DatabaseHost     string `mapstructure:"DATABASE_HOST"`
+        DatabaseName     string `mapstructure:"DATABASE_NAME"`
+        DatabaseUser     string `mapstructure:"DATABASE_USER"`
+        DatabasePassword string `mapstructure:"DATABASE_PASSWORD"`
+        DatabasePort     int    `mapstructure:"DATABASE_PORT"`
+        ClerkKey         string `mapstructure:"CLERK_KEY"`
+
+        DatabaseUrl string
+}
+
+func LoadConfig(path string) (config Config, err error) <span class="cov8" title="1">{
+        viper.SetConfigFile(path)
+
+        viper.AutomaticEnv()
+
+        err = viper.ReadInConfig()
+        if err != nil </span><span class="cov8" title="1">{
+                return
+        }</span>
+
+        <span class="cov8" title="1">err = viper.Unmarshal(&amp;config)
+
+        config.DatabaseUrl = fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable", config.DatabaseUser, config.DatabasePassword, config.DatabaseHost, config.DatabasePort, config.DatabaseName)
+
+        return</span>
+}
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package util
+
+import (
+        "fmt"
+        "math"
+        "math/rand"
+        "strings"
+        "time"
+)
+
+const alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+func init() <span class="cov8" title="1">{
+        rand.NewSource(time.Now().UnixNano())
+}</span>
+
+func RandomInt(min, max int64) int64 <span class="cov8" title="1">{
+        return min + rand.Int63n(max-min+1)
+}</span>
+
+func RandomFloat(min, max float64) float64 <span class="cov8" title="1">{
+        return math.Round((min + rand.Float64()*(max-min)*100)) / 100
+}</span>
+
+func RandomString(size int) string <span class="cov8" title="1">{
+        var sb strings.Builder
+        k := len(alphabet)
+
+        for i := 0; i &lt; size; i++ </span><span class="cov8" title="1">{
+                c := alphabet[rand.Intn(k)]
+                sb.WriteByte(c)
+        }</span>
+
+        <span class="cov8" title="1">return sb.String()</span>
+}
+
+func RandomOwner() string <span class="cov8" title="1">{
+        return RandomString(6)
+}</span>
+
+func RandomMoney() float64 <span class="cov8" title="1">{
+        return RandomFloat(1, 1000)
+}</span>
+
+func RandomEmail() string <span class="cov8" title="1">{
+        return fmt.Sprintf("%s@%s.%s", RandomString(10), RandomString(5), "com")
+}</span>
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">package main
+
+import cmd "github.com/ronymmoura/spending-sage-api/cmd/sage"
+
+func main() <span class="cov0" title="0">{
+        cmd.Run()
+}</span>
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
