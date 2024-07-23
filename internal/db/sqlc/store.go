@@ -9,6 +9,8 @@ import (
 
 type Store interface {
 	Querier
+
+	SearchMonthEntries(context.Context, SearchMonthEntriesParams) ([]MonthEntry, error)
 }
 
 type SQLStore struct {

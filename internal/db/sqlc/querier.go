@@ -11,14 +11,18 @@ import (
 type Querier interface {
 	CreateCategory(ctx context.Context, name string) (Category, error)
 	CreateMonth(ctx context.Context, arg CreateMonthParams) (Month, error)
+	CreateMonthEntry(ctx context.Context, arg CreateMonthEntryParams) (MonthEntry, error)
 	CreateOrigin(ctx context.Context, arg CreateOriginParams) (Origin, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	DeleteCategory(ctx context.Context, id int64) error
 	DeleteMonth(ctx context.Context, id int64) error
+	DeleteMonthEntry(ctx context.Context, id int64) error
 	DeleteOrigin(ctx context.Context, id int64) error
 	DeleteUser(ctx context.Context, id int64) error
+	EditMonthEntry(ctx context.Context, arg EditMonthEntryParams) (MonthEntry, error)
 	GetCategory(ctx context.Context, id int64) (Category, error)
 	GetMonth(ctx context.Context, id int64) (Month, error)
+	GetMonthEntry(ctx context.Context, id int64) (MonthEntry, error)
 	GetOrigin(ctx context.Context, id int64) (Origin, error)
 	GetUser(ctx context.Context, id int64) (User, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
