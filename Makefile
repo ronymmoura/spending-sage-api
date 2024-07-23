@@ -5,6 +5,8 @@ DB_URL := postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DA
 
 setup: create-db migrate-up
 
+reset-db: drop-db setup
+
 test:
 	go test -cover -coverprofile=c.out ./...
 

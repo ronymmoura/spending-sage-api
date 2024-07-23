@@ -1,4 +1,11 @@
 mode: set
+github.com/ronymmoura/spending-sage-api/main.go:5.13,7.2 1 0
+github.com/ronymmoura/spending-sage-api/internal/auth/clerk/clerk.go:22.35,25.2 2 0
+github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:8.12,10.16 2 0
+github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:10.16,11.37 1 0
+github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:14.2,15.16 2 0
+github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:15.16,16.15 1 0
+github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:19.2,19.23 1 0
 github.com/ronymmoura/spending-sage-api/internal/api/auth.go:10.48,13.59 2 0
 github.com/ronymmoura/spending-sage-api/internal/api/auth.go:13.59,16.3 2 0
 github.com/ronymmoura/spending-sage-api/internal/api/auth.go:18.2,18.34 1 0
@@ -25,13 +32,6 @@ github.com/ronymmoura/spending-sage-api/internal/api/server.go:48.45,50.4 1 0
 github.com/ronymmoura/spending-sage-api/internal/api/server.go:54.2,60.24 4 0
 github.com/ronymmoura/spending-sage-api/internal/api/server.go:63.37,65.2 1 0
 github.com/ronymmoura/spending-sage-api/internal/api/user.go:12.49,15.2 2 0
-github.com/ronymmoura/spending-sage-api/internal/auth/clerk/clerk.go:22.35,25.2 2 0
-github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:8.12,10.16 2 0
-github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:10.16,11.37 1 0
-github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:14.2,15.16 2 0
-github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:15.16,16.15 1 0
-github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:19.2,19.23 1 0
-github.com/ronymmoura/spending-sage-api/main.go:5.13,7.2 1 0
 github.com/ronymmoura/spending-sage-api/internal/util/config.go:21.57,27.16 4 1
 github.com/ronymmoura/spending-sage-api/internal/util/config.go:27.16,29.3 1 1
 github.com/ronymmoura/spending-sage-api/internal/util/config.go:31.2,35.8 3 1
@@ -58,6 +58,18 @@ github.com/ronymmoura/spending-sage-api/internal/db/sqlc/months.sql.go:88.3,88.2
 github.com/ronymmoura/spending-sage-api/internal/db/sqlc/months.sql.go:90.2,90.35 1 1
 github.com/ronymmoura/spending-sage-api/internal/db/sqlc/months.sql.go:90.35,92.3 1 0
 github.com/ronymmoura/spending-sage-api/internal/db/sqlc/months.sql.go:93.2,93.19 1 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/origins.sql.go:29.93,34.2 4 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/origins.sql.go:41.69,44.2 2 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/origins.sql.go:53.76,58.2 4 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/origins.sql.go:65.70,67.16 2 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/origins.sql.go:67.16,69.3 1 0
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/origins.sql.go:70.2,72.18 3 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/origins.sql.go:72.18,74.60 2 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/origins.sql.go:74.60,76.4 1 0
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/origins.sql.go:77.3,77.27 1 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/origins.sql.go:79.2,79.35 1 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/origins.sql.go:79.35,81.3 1 0
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/origins.sql.go:82.2,82.19 1 1
 github.com/ronymmoura/spending-sage-api/internal/db/sqlc/store.go:19.45,24.2 1 1
 github.com/ronymmoura/spending-sage-api/internal/db/sqlc/store.go:26.83,28.16 2 0
 github.com/ronymmoura/spending-sage-api/internal/db/sqlc/store.go:28.16,30.3 1 0
