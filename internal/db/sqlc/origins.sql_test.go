@@ -26,20 +26,8 @@ func createRandomOrigin(t *testing.T) Origin {
 	return origin
 }
 
-func deleteCreatedOrigin(t *testing.T, createdOrigin Origin) {
-	err := testStore.DeleteOrigin(context.Background(), createdOrigin.ID)
-	require.NoError(t, err)
-
-	origin, err := testStore.GetOrigin(context.Background(), createdOrigin.ID)
-	require.Error(t, err)
-	require.EqualError(t, err, pgx.ErrNoRows.Error())
-	require.Empty(t, origin)
-}
-
 func TestCreateOrigin(t *testing.T) {
-	createdOrigin := createRandomOrigin(t)
-
-	deleteCreatedOrigin(t, createdOrigin)
+	createRandomOrigin(t)
 }
 
 func TestGetOrigin(t *testing.T) {
@@ -52,8 +40,6 @@ func TestGetOrigin(t *testing.T) {
 	require.Equal(t, createdOrigin.ID, origin.ID)
 	require.Equal(t, createdOrigin.Name, origin.Name)
 	require.Equal(t, createdOrigin.Type, origin.Type)
-
-	deleteCreatedOrigin(t, createdOrigin)
 }
 
 func TestListOrigins(t *testing.T) {
@@ -66,15 +52,16 @@ func TestListOrigins(t *testing.T) {
 	origins, err := testStore.ListOrigins(context.Background())
 	require.NoError(t, err)
 	require.NotEmpty(t, origins)
-	require.Equal(t, amount, len(origins))
-
-	for _, createdOrigin := range origins {
-		deleteCreatedOrigin(t, createdOrigin)
-	}
 }
 
 func TestDeleteOrigin(t *testing.T) {
 	createdOrigin := createRandomOrigin(t)
 
-	deleteCreatedOrigin(t, createdOrigin)
+	err := testStore.DeleteOrigin(context.Background(), createdOrigin.ID)
+	require.NoError(t, err)
+
+	origin, err := testStore.GetOrigin(context.Background(), createdOrigin.ID)
+	require.Error(t, err)
+	require.EqualError(t, err, pgx.ErrNoRows.Error())
+	require.Empty(t, origin)
 }

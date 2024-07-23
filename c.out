@@ -1,11 +1,11 @@
 mode: set
 github.com/ronymmoura/spending-sage-api/main.go:5.13,7.2 1 0
-github.com/ronymmoura/spending-sage-api/internal/auth/clerk/clerk.go:22.35,25.2 2 0
 github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:8.12,10.16 2 0
 github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:10.16,11.37 1 0
 github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:14.2,15.16 2 0
 github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:15.16,16.15 1 0
 github.com/ronymmoura/spending-sage-api/cmd/sage/sage.go:19.2,19.23 1 0
+github.com/ronymmoura/spending-sage-api/internal/auth/clerk/clerk.go:22.35,25.2 2 0
 github.com/ronymmoura/spending-sage-api/internal/api/auth.go:10.48,13.59 2 0
 github.com/ronymmoura/spending-sage-api/internal/api/auth.go:13.59,16.3 2 0
 github.com/ronymmoura/spending-sage-api/internal/api/auth.go:18.2,18.34 1 0
@@ -44,6 +44,18 @@ github.com/ronymmoura/spending-sage-api/internal/util/random.go:34.2,34.20 1 1
 github.com/ronymmoura/spending-sage-api/internal/util/random.go:37.27,39.2 1 1
 github.com/ronymmoura/spending-sage-api/internal/util/random.go:41.28,43.2 1 1
 github.com/ronymmoura/spending-sage-api/internal/util/random.go:45.27,47.2 1 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/categories.sql.go:22.86,27.2 4 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/categories.sql.go:34.71,37.2 2 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/categories.sql.go:46.80,51.2 4 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/categories.sql.go:59.75,61.16 2 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/categories.sql.go:61.16,63.3 1 0
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/categories.sql.go:64.2,66.18 3 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/categories.sql.go:66.18,68.51 2 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/categories.sql.go:68.51,70.4 1 0
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/categories.sql.go:71.3,71.27 1 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/categories.sql.go:73.2,73.35 1 1
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/categories.sql.go:73.35,75.3 1 0
+github.com/ronymmoura/spending-sage-api/internal/db/sqlc/categories.sql.go:76.2,76.19 1 1
 github.com/ronymmoura/spending-sage-api/internal/db/sqlc/db.go:20.28,22.2 1 1
 github.com/ronymmoura/spending-sage-api/internal/db/sqlc/db.go:28.46,32.2 1 0
 github.com/ronymmoura/spending-sage-api/internal/db/sqlc/months.sql.go:30.90,35.2 4 1

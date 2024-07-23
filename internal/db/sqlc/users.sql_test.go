@@ -28,8 +28,20 @@ func createRandomUser(t *testing.T) User {
 	return user
 }
 
+func deleteCreatedUser(t *testing.T, createdUser User) {
+	err := testStore.DeleteUser(context.Background(), createdUser.ID)
+	require.NoError(t, err)
+
+	user, err := testStore.GetUser(context.Background(), createdUser.ID)
+	require.Error(t, err)
+	require.EqualError(t, err, pgx.ErrNoRows.Error())
+	require.Empty(t, user)
+}
+
 func TestCreateUser(t *testing.T) {
-	createRandomUser(t)
+	createdUser := createRandomUser(t)
+
+	deleteCreatedUser(t, createdUser)
 }
 
 func TestGetUser(t *testing.T) {
@@ -44,6 +56,8 @@ func TestGetUser(t *testing.T) {
 	require.Equal(t, createdUser.FullName, user.FullName)
 	require.NotZero(t, user.CreatedAt)
 	require.WithinDuration(t, createdUser.CreatedAt, user.CreatedAt, time.Second)
+
+	deleteCreatedUser(t, createdUser)
 }
 
 func TestGetUserByEmail(t *testing.T) {
@@ -58,16 +72,12 @@ func TestGetUserByEmail(t *testing.T) {
 	require.Equal(t, createdUser.FullName, user.FullName)
 	require.NotZero(t, user.CreatedAt)
 	require.WithinDuration(t, createdUser.CreatedAt, user.CreatedAt, time.Second)
+
+	deleteCreatedUser(t, createdUser)
 }
 
 func TestDeleteUser(t *testing.T) {
 	createdUser := createRandomUser(t)
 
-	err := testStore.DeleteUser(context.Background(), createdUser.ID)
-	require.NoError(t, err)
-
-	user, err := testStore.GetUser(context.Background(), createdUser.ID)
-	require.Error(t, err)
-	require.EqualError(t, err, pgx.ErrNoRows.Error())
-	require.Empty(t, user)
+	deleteCreatedUser(t, createdUser)
 }
