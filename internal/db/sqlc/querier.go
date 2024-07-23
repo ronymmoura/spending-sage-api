@@ -11,12 +11,14 @@ import (
 type Querier interface {
 	CreateCategory(ctx context.Context, name string) (Category, error)
 	CreateFixedEntry(ctx context.Context, arg CreateFixedEntryParams) (FixedEntry, error)
+	CreateFixedEntryPaymentHistory(ctx context.Context, arg CreateFixedEntryPaymentHistoryParams) (FixedEntryPaymentHistory, error)
 	CreateMonth(ctx context.Context, arg CreateMonthParams) (Month, error)
 	CreateMonthEntry(ctx context.Context, arg CreateMonthEntryParams) (MonthEntry, error)
 	CreateOrigin(ctx context.Context, arg CreateOriginParams) (Origin, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	DeleteCategory(ctx context.Context, id int64) error
 	DeleteFixedEntry(ctx context.Context, id int64) error
+	DeleteFixedEntryPaymentHistory(ctx context.Context, id int64) error
 	DeleteMonth(ctx context.Context, id int64) error
 	DeleteMonthEntry(ctx context.Context, id int64) error
 	DeleteOrigin(ctx context.Context, id int64) error
@@ -25,12 +27,14 @@ type Querier interface {
 	EditMonthEntry(ctx context.Context, arg EditMonthEntryParams) (MonthEntry, error)
 	GetCategory(ctx context.Context, id int64) (Category, error)
 	GetFixedEntry(ctx context.Context, id int64) (FixedEntry, error)
+	GetFixedEntryPaymentHistory(ctx context.Context, id int64) (FixedEntryPaymentHistory, error)
 	GetMonth(ctx context.Context, id int64) (Month, error)
 	GetMonthEntry(ctx context.Context, id int64) (MonthEntry, error)
 	GetOrigin(ctx context.Context, id int64) (Origin, error)
 	GetUser(ctx context.Context, id int64) (User, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	ListCategories(ctx context.Context) ([]Category, error)
+	ListFixedEntryPaymentHistory(ctx context.Context, entryID int64) ([]FixedEntryPaymentHistory, error)
 	ListMonths(ctx context.Context, arg ListMonthsParams) ([]Month, error)
 	ListOrigins(ctx context.Context) ([]Origin, error)
 }
