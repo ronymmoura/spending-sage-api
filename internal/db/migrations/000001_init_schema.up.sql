@@ -42,8 +42,8 @@ CREATE TABLE fixed_entries (
   pay_day date NOT NULL,
   amount int NOT NULL CHECK (amount > 0),
   owner varchar NOT NULL,
-  origin_id int NOT NULL,
-  category_id int NOT NULL
+  origin_id bigserial NOT NULL,
+  category_id bigserial NOT NULL
 );
 
 CREATE TABLE fixed_entry_payment_history (

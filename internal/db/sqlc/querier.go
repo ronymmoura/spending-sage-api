@@ -10,17 +10,21 @@ import (
 
 type Querier interface {
 	CreateCategory(ctx context.Context, name string) (Category, error)
+	CreateFixedEntry(ctx context.Context, arg CreateFixedEntryParams) (FixedEntry, error)
 	CreateMonth(ctx context.Context, arg CreateMonthParams) (Month, error)
 	CreateMonthEntry(ctx context.Context, arg CreateMonthEntryParams) (MonthEntry, error)
 	CreateOrigin(ctx context.Context, arg CreateOriginParams) (Origin, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	DeleteCategory(ctx context.Context, id int64) error
+	DeleteFixedEntry(ctx context.Context, id int64) error
 	DeleteMonth(ctx context.Context, id int64) error
 	DeleteMonthEntry(ctx context.Context, id int64) error
 	DeleteOrigin(ctx context.Context, id int64) error
 	DeleteUser(ctx context.Context, id int64) error
+	EditFixedEntry(ctx context.Context, arg EditFixedEntryParams) (FixedEntry, error)
 	EditMonthEntry(ctx context.Context, arg EditMonthEntryParams) (MonthEntry, error)
 	GetCategory(ctx context.Context, id int64) (Category, error)
+	GetFixedEntry(ctx context.Context, id int64) (FixedEntry, error)
 	GetMonth(ctx context.Context, id int64) (Month, error)
 	GetMonthEntry(ctx context.Context, id int64) (MonthEntry, error)
 	GetOrigin(ctx context.Context, id int64) (Origin, error)

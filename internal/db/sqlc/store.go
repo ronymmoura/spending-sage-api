@@ -11,6 +11,7 @@ type Store interface {
 	Querier
 
 	SearchMonthEntries(context.Context, SearchMonthEntriesParams) ([]MonthEntry, error)
+	SearchFixedEntries(context.Context, SearchFixedEntriesParams) ([]FixedEntry, error)
 }
 
 type SQLStore struct {

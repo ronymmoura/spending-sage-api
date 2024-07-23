@@ -21,8 +21,8 @@ type FixedEntry struct {
 	PayDay     time.Time `json:"pay_day"`
 	Amount     int32     `json:"amount"`
 	Owner      string    `json:"owner"`
-	OriginID   int32     `json:"origin_id"`
-	CategoryID int32     `json:"category_id"`
+	OriginID   int64     `json:"origin_id"`
+	CategoryID int64     `json:"category_id"`
 }
 
 type FixedEntryPaymentHistory struct {
