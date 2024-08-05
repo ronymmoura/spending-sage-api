@@ -50,5 +50,11 @@ sqlc-compile:
 sqlc-generate:
 	docker run --rm -v $(MAKEFILE_DIR):/src -w /src sqlc/sqlc generate -f /src/internal/db/sqlc.yaml
 
+
+# TOOLS
+ngrok:
+	ngrok http http://localhost:8080
+
 .PHONY:
-	create-db drop-db migration-new migrate-up migrate-down migrate-up1 migrate-down1 
+	reset-db create-db drop-db migration-new migrate-up migrate-down migrate-up1 migrate-down1 
+	ngrok

@@ -23,6 +23,11 @@ ORDER BY date DESC
 LIMIT $2
 OFFSET $3;
 
+-- name: CountMonths :one
+SELECT COUNT(*)
+FROM months
+WHERE user_id = $1;
+
 -- name: DeleteMonth :exec
 DELETE FROM months
 WHERE id = $1;

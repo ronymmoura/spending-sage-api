@@ -1,0 +1,6 @@
+@host_address = http://0.0.0.0:8080
+@content_type = application/json
+
+### Login Request
+# @name authRequest
+POST {{host_address}}/auth/login

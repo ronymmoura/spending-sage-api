@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"log"
+
 	"github.com/ronymmoura/spending-sage-api/internal/api"
 	"github.com/ronymmoura/spending-sage-api/internal/util"
 )
@@ -8,12 +10,12 @@ import (
 func Run() {
 	config, err := util.LoadConfig(".env")
 	if err != nil {
-		panic("Error loading config file")
+		log.Fatal("Error loading config file:", err)
 	}
 
 	server, err := api.NewServer(config)
 	if err != nil {
-		panic("Opa")
+		log.Fatal("Error starting server:", err)
 	}
 
 	server.Start(":8080")

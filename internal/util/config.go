@@ -13,7 +13,12 @@ type Config struct {
 	DatabaseUser     string `mapstructure:"DATABASE_USER"`
 	DatabasePassword string `mapstructure:"DATABASE_PASSWORD"`
 	DatabasePort     int    `mapstructure:"DATABASE_PORT"`
-	ClerkKey         string `mapstructure:"CLERK_KEY"`
+
+	ClerkKey string `mapstructure:"CLERK_KEY"`
+
+	CacheUrl      string `mapstructure:"CACHE_URL"`
+	CachePassword string `mapstructure:"CACHE_PASSWORD"`
+	CacheDatabase int    `mapstructure:"CACHE_DATABASE"`
 
 	DatabaseUrl string
 }

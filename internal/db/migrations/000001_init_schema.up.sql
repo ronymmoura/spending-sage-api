@@ -28,6 +28,7 @@ CREATE TABLE month_entries (
   name varchar NOT NULL,
   due_date date NOT NULL,
   pay_date date NOT NULL,
+  paid_date date NULL,
   amount int NOT NULL CHECK (amount > 0),
   owner varchar NOT NULL,
   origin_id bigserial NOT NULL,
@@ -39,7 +40,7 @@ CREATE TABLE fixed_entries (
   user_id bigserial NOT NULL,
   name varchar NOT NULL,
   due_date date NOT NULL,
-  pay_day date NOT NULL,
+  pay_day int2 NOT NULL,
   amount int NOT NULL CHECK (amount > 0),
   owner varchar NOT NULL,
   origin_id bigserial NOT NULL,
@@ -54,6 +55,8 @@ CREATE TABLE fixed_entry_payment_history (
 );
 
 CREATE INDEX ON users (email);
+
+CREATE UNIQUE INDEX ON months (user_id, date);
 
 ALTER TABLE months ADD FOREIGN KEY (user_id) REFERENCES users (id);
 

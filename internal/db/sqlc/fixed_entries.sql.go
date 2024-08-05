@@ -40,7 +40,7 @@ type CreateFixedEntryParams struct {
 	CategoryID int64     `json:"category_id"`
 	Name       string    `json:"name"`
 	DueDate    time.Time `json:"due_date"`
-	PayDay     time.Time `json:"pay_day"`
+	PayDay     int16     `json:"pay_day"`
 	Amount     int32     `json:"amount"`
 	Owner      string    `json:"owner"`
 }
@@ -98,7 +98,7 @@ type EditFixedEntryParams struct {
 	ID         int64     `json:"id"`
 	Name       string    `json:"name"`
 	DueDate    time.Time `json:"due_date"`
-	PayDay     time.Time `json:"pay_day"`
+	PayDay     int16     `json:"pay_day"`
 	Amount     int32     `json:"amount"`
 	Owner      string    `json:"owner"`
 	OriginID   int64     `json:"origin_id"`

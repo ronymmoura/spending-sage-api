@@ -1,6 +1,10 @@
 package auth
 
-import "fmt"
+import (
+	"github.com/clerk/clerk-sdk-go/v2"
+	"github.com/gin-gonic/gin"
+	"github.com/ronymmoura/spending-sage-api/internal/util"
+)
 
 type ClerkEvent struct {
 	Data ClerkUserData `json:"data"`
@@ -19,7 +23,7 @@ type ClerkUserDataEmailAddresses struct {
 	Email string `json:"email_address"`
 }
 
-func CreateUser(event ClerkEvent) {
-	fmt.Printf("name: %s\n", event.Data.FirstName)
-	fmt.Printf("email: %s\n", event.Data.EmailAddresses[0].Email)
+func GetUser(ctx *gin.Context) *clerk.User {
+	authPayload := ctx.MustGet(util.AuthorizationPayloadKey).(*clerk.User)
+	return authPayload
 }

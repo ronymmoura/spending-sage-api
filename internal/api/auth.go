@@ -5,9 +5,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	auth "github.com/ronymmoura/spending-sage-api/internal/auth/clerk"
+	"github.com/ronymmoura/spending-sage-api/internal/usecases"
 )
 
-func (server *Server) signIn(ctx *gin.Context) {
+func (server *Server) SignInRoute(ctx *gin.Context) {
 	var event auth.ClerkEvent
 
 	if err := ctx.ShouldBindBodyWithJSON(&event); err != nil {
@@ -16,6 +17,7 @@ func (server *Server) signIn(ctx *gin.Context) {
 	}
 
 	if event.Type == "user.created" {
-		auth.CreateUser(event)
+		fullName := event.Data.FirstName + " " + event.Data.LastName
+		usecases.CreateUserUseCase(ctx, server.Store, fullName, event.Data.EmailAddresses[0].Email)
 	}
 }

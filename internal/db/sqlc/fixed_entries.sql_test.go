@@ -22,7 +22,7 @@ func createRandomFixedEntry(t *testing.T) FixedEntry {
 		OriginID:   origin.ID,
 		Name:       util.RandomString(10),
 		DueDate:    time.Now(),
-		PayDay:     time.Now(),
+		PayDay:     1,
 		Amount:     int32(util.RandomInt(1, 1000)),
 		Owner:      util.RandomOwner(),
 	}
@@ -36,7 +36,7 @@ func createRandomFixedEntry(t *testing.T) FixedEntry {
 	require.NotZero(t, fixedEntry.DueDate)
 	require.WithinDuration(t, arg.DueDate, fixedEntry.DueDate, time.Hour*24)
 	require.NotZero(t, fixedEntry.PayDay)
-	require.WithinDuration(t, arg.PayDay, fixedEntry.PayDay, time.Hour*24)
+	require.Equal(t, arg.PayDay, fixedEntry.PayDay)
 	require.NotZero(t, fixedEntry.Amount)
 	require.Equal(t, arg.Amount, fixedEntry.Amount)
 	require.Equal(t, arg.Owner, fixedEntry.Owner)
@@ -61,7 +61,7 @@ func TestGetFixedEntry(t *testing.T) {
 	require.NotZero(t, fixedEntry.DueDate)
 	require.WithinDuration(t, createdFixedEntry.DueDate, fixedEntry.DueDate, time.Second)
 	require.NotZero(t, fixedEntry.PayDay)
-	require.WithinDuration(t, createdFixedEntry.PayDay, fixedEntry.PayDay, time.Second)
+	require.Equal(t, createdFixedEntry.PayDay, fixedEntry.PayDay)
 	require.NotZero(t, fixedEntry.Amount)
 	require.Equal(t, createdFixedEntry.Amount, fixedEntry.Amount)
 	require.Equal(t, createdFixedEntry.Owner, fixedEntry.Owner)
@@ -200,7 +200,7 @@ func TestEditFixedEntry(t *testing.T) {
 	require.NotZero(t, fixedEntry.DueDate)
 	require.WithinDuration(t, arg.DueDate, fixedEntry.DueDate, time.Hour*24)
 	require.NotZero(t, fixedEntry.PayDay)
-	require.WithinDuration(t, arg.PayDay, fixedEntry.PayDay, time.Hour*24)
+	require.Equal(t, arg.PayDay, fixedEntry.PayDay)
 	require.NotZero(t, fixedEntry.Amount)
 	require.Equal(t, arg.Amount, fixedEntry.Amount)
 	require.Equal(t, arg.Owner, fixedEntry.Owner)

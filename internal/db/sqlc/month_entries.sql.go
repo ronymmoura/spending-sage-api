@@ -31,7 +31,7 @@ VALUES (
   $7,
   $8
 )
-RETURNING id, month_id, name, due_date, pay_date, amount, owner, origin_id, category_id
+RETURNING id, month_id, name, due_date, pay_date, paid_date, amount, owner, origin_id, category_id
 `
 
 type CreateMonthEntryParams struct {
@@ -63,6 +63,7 @@ func (q *Queries) CreateMonthEntry(ctx context.Context, arg CreateMonthEntryPara
 		&i.Name,
 		&i.DueDate,
 		&i.PayDate,
+		&i.PaidDate,
 		&i.Amount,
 		&i.Owner,
 		&i.OriginID,
@@ -91,7 +92,7 @@ SET name = $2,
     origin_id = $7,
     category_id = $8
 WHERE id = $1
-RETURNING id, month_id, name, due_date, pay_date, amount, owner, origin_id, category_id
+RETURNING id, month_id, name, due_date, pay_date, paid_date, amount, owner, origin_id, category_id
 `
 
 type EditMonthEntryParams struct {
@@ -123,6 +124,7 @@ func (q *Queries) EditMonthEntry(ctx context.Context, arg EditMonthEntryParams) 
 		&i.Name,
 		&i.DueDate,
 		&i.PayDate,
+		&i.PaidDate,
 		&i.Amount,
 		&i.Owner,
 		&i.OriginID,
@@ -132,7 +134,7 @@ func (q *Queries) EditMonthEntry(ctx context.Context, arg EditMonthEntryParams) 
 }
 
 const getMonthEntry = `-- name: GetMonthEntry :one
-SELECT id, month_id, name, due_date, pay_date, amount, owner, origin_id, category_id
+SELECT id, month_id, name, due_date, pay_date, paid_date, amount, owner, origin_id, category_id
 FROM month_entries
 WHERE id = $1
 LIMIT 1
@@ -147,6 +149,7 @@ func (q *Queries) GetMonthEntry(ctx context.Context, id int64) (MonthEntry, erro
 		&i.Name,
 		&i.DueDate,
 		&i.PayDate,
+		&i.PaidDate,
 		&i.Amount,
 		&i.Owner,
 		&i.OriginID,

@@ -18,7 +18,7 @@ type FixedEntry struct {
 	UserID     int64     `json:"user_id"`
 	Name       string    `json:"name"`
 	DueDate    time.Time `json:"due_date"`
-	PayDay     time.Time `json:"pay_day"`
+	PayDay     int16     `json:"pay_day"`
 	Amount     int32     `json:"amount"`
 	Owner      string    `json:"owner"`
 	OriginID   int64     `json:"origin_id"`
@@ -44,11 +44,12 @@ type MonthEntry struct {
 	Name    string    `json:"name"`
 	DueDate time.Time `json:"due_date"`
 	// Date that is planned to pay this entry
-	PayDate    time.Time `json:"pay_date"`
-	Amount     int32     `json:"amount"`
-	Owner      string    `json:"owner"`
-	OriginID   int64     `json:"origin_id"`
-	CategoryID int64     `json:"category_id"`
+	PayDate    time.Time  `json:"pay_date"`
+	PaidDate   *time.Time `json:"paid_date"`
+	Amount     int32      `json:"amount"`
+	Owner      string     `json:"owner"`
+	OriginID   int64      `json:"origin_id"`
+	CategoryID int64      `json:"category_id"`
 }
 
 type Origin struct {

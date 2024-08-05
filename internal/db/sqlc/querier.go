@@ -9,6 +9,7 @@ import (
 )
 
 type Querier interface {
+	CountMonths(ctx context.Context, userID int64) (int64, error)
 	CreateCategory(ctx context.Context, name string) (Category, error)
 	CreateFixedEntry(ctx context.Context, arg CreateFixedEntryParams) (FixedEntry, error)
 	CreateFixedEntryPaymentHistory(ctx context.Context, arg CreateFixedEntryPaymentHistoryParams) (FixedEntryPaymentHistory, error)

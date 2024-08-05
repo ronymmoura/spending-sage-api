@@ -20,3 +20,8 @@ sql:
               go_type: "github.com/google/uuid.UUID"
             - db_type: "date"
               go_type: "time.Time"
+            - db_type: "date"
+              nullable: true
+              go_type: 
+                type: "time.Time"
+                pointer: true

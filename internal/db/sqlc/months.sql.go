@@ -10,6 +10,19 @@ import (
 	"time"
 )
 
+const countMonths = `-- name: CountMonths :one
+SELECT COUNT(*)
+FROM months
+WHERE user_id = $1
+`
+
+func (q *Queries) CountMonths(ctx context.Context, userID int64) (int64, error) {
+	row := q.db.QueryRow(ctx, countMonths, userID)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const createMonth = `-- name: CreateMonth :one
 INSERT INTO months (
   user_id,
