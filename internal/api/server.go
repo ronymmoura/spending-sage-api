@@ -17,7 +17,7 @@ import (
 type Server struct {
 	Router *gin.Engine
 	Config util.Config
-	Store  db.Store
+	Store  *db.SQLStore
 	Cache  cache.RedisCache
 }
 
@@ -71,7 +71,7 @@ func (server *Server) setupRouter() {
 
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"},
 		AllowHeaders:     []string{"Origin, X-Requested-With, Content-Type, Accept"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
@@ -93,9 +93,11 @@ func (server *Server) setupRouter() {
 
 	protectedRoutes.GET("/months/:month_id/entries", server.SearchMonthEntriesRoute)
 	protectedRoutes.POST("/months/:month_id/entries", server.CreateMonthEntryRoute)
+	protectedRoutes.PATCH("/months/:month_id/entries/:id/pay", server.PayEntryRoute)
 
 	protectedRoutes.GET("/fixedEntries", server.SearchFixedEntriesRoute)
 	protectedRoutes.POST("/fixedEntries", server.CreateFixedEntryRoute)
+	protectedRoutes.PUT("/fixedEntries/:fixed_entry_id", server.EditFixedEntryRoute)
 
 	server.Router = router
 }

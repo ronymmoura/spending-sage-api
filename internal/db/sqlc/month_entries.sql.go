@@ -157,3 +157,33 @@ func (q *Queries) GetMonthEntry(ctx context.Context, id int64) (MonthEntry, erro
 	)
 	return i, err
 }
+
+const payEntry = `-- name: PayEntry :one
+UPDATE month_entries
+SET paid_date = $2
+WHERE id = $1
+RETURNING id, month_id, name, due_date, pay_date, paid_date, amount, owner, origin_id, category_id
+`
+
+type PayEntryParams struct {
+	ID       int64      `json:"id"`
+	PaidDate *time.Time `json:"paid_date"`
+}
+
+func (q *Queries) PayEntry(ctx context.Context, arg PayEntryParams) (MonthEntry, error) {
+	row := q.db.QueryRow(ctx, payEntry, arg.ID, arg.PaidDate)
+	var i MonthEntry
+	err := row.Scan(
+		&i.ID,
+		&i.MonthID,
+		&i.Name,
+		&i.DueDate,
+		&i.PayDate,
+		&i.PaidDate,
+		&i.Amount,
+		&i.Owner,
+		&i.OriginID,
+		&i.CategoryID,
+	)
+	return i, err
+}

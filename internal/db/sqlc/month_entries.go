@@ -5,14 +5,16 @@ import (
 	"database/sql"
 )
 
-const searchMonthEntries = `-- name: ListMonthEntries :many
-SELECT id, month_id, name, due_date, pay_date, amount, owner, origin_id, category_id
+const searchMonthEntries = `-- name: SearchMonthEntries :many
+SELECT id, month_id, name, due_date, pay_date, paid_date, amount, owner, origin_id, category_id
 FROM month_entries
 WHERE month_id = $1
   AND (origin_id = $2 OR $2 IS NULL)
   AND (category_id = $3 OR $3 IS NULL)
   AND (owner = $4 OR $4 IS NULL)
-ORDER BY due_date ASC
+ORDER BY 
+	paid_date ASC,
+	pay_date ASC
 `
 
 type SearchMonthEntriesParams struct {
@@ -42,6 +44,7 @@ func (q *Queries) SearchMonthEntries(ctx context.Context, arg SearchMonthEntries
 			&i.Name,
 			&i.DueDate,
 			&i.PayDate,
+			&i.PaidDate,
 			&i.Amount,
 			&i.Owner,
 			&i.OriginID,

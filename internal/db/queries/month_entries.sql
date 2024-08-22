@@ -39,6 +39,12 @@ SET name = $2,
 WHERE id = $1
 RETURNING *;
 
+-- name: PayEntry :one
+UPDATE month_entries
+SET paid_date = $2
+WHERE id = $1
+RETURNING *;
+
 -- name: DeleteMonthEntry :exec
 DELETE FROM month_entries
 WHERE id = $1;

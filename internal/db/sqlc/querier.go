@@ -38,6 +38,7 @@ type Querier interface {
 	ListFixedEntryPaymentHistory(ctx context.Context, entryID int64) ([]FixedEntryPaymentHistory, error)
 	ListMonths(ctx context.Context, arg ListMonthsParams) ([]Month, error)
 	ListOrigins(ctx context.Context) ([]Origin, error)
+	PayEntry(ctx context.Context, arg PayEntryParams) (MonthEntry, error)
 }
 
 var _ Querier = (*Queries)(nil)

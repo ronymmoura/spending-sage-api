@@ -2,6 +2,7 @@ package api
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -69,6 +70,7 @@ type MonthEntryResponse struct {
 	Owner    string      `json:"owner"`
 	Origin   db.Origin   `json:"origin"`
 	Category db.Category `json:"category"`
+	MonthID  int64       `json:"month_id"`
 }
 
 func monthEntryMapper(ctx *gin.Context, server *Server, entries []db.MonthEntry) (monthEntries []MonthEntryResponse, err error) {
@@ -91,6 +93,7 @@ func monthEntryMapper(ctx *gin.Context, server *Server, entries []db.MonthEntry)
 			PaidDate: entry.PaidDate,
 			Amount:   float32(entry.Amount) / 100,
 			Owner:    entry.Owner,
+			MonthID:  entry.MonthID,
 			Origin:   entryOrigin,
 			Category: entryCategory,
 		})
@@ -131,4 +134,35 @@ func (server *Server) SearchMonthEntriesRoute(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, res)
+}
+
+type PayEntryRequest struct {
+	ID      int64      `uri:"id"`
+	MonthID int64      `uri:"month_id"`
+	Date    *time.Time `form:"date"`
+}
+
+func (server *Server) PayEntryRoute(ctx *gin.Context) {
+	user := GetUser(ctx, server.Store)
+
+	var req PayEntryRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	if err := ctx.ShouldBindUri(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	fmt.Printf("id: %d, month_id: %d, date: %v", req.ID, req.MonthID, req.Date)
+
+	monthEntry, err := usecases.PayMonthEntryUseCase(ctx, server.Store, user, req.ID, req.MonthID, req.Date)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, monthEntry)
 }
