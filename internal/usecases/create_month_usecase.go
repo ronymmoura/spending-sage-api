@@ -24,6 +24,7 @@ func CreateMonthUseCase(ctx *gin.Context, store *db.SQLStore, date time.Time, us
 			return err
 		}
 
+		// Create entries from fixed entries
 		fixedEntries, err := q.SearchFixedEntries(ctx, db.SearchFixedEntriesParams{
 			UserID: user.ID,
 		})
@@ -38,10 +39,29 @@ func CreateMonthUseCase(ctx *gin.Context, store *db.SQLStore, date time.Time, us
 				OriginID:   fixedEntry.OriginID,
 				CategoryID: fixedEntry.CategoryID,
 				Name:       fixedEntry.Name,
-				DueDate:    fixedEntry.DueDate,
+				DueDate:    time.Date(month.Date.Year(), month.Date.Month(), int(fixedEntry.DueDate.Day()), 0, 0, 0, 0, month.Date.Location()),
 				Amount:     fixedEntry.Amount,
 				Owner:      fixedEntry.Owner,
 				PayDate:    time.Date(month.Date.Year(), month.Date.Month(), int(fixedEntry.PayDay), 0, 0, 0, 0, month.Date.Location()),
+			})
+
+			if err != nil {
+				return err
+			}
+		}
+
+		// Create expected payments from monthly expected payments
+		monthlyExpectedPayments, err := q.ListMonthlyExpectedPayments(ctx, user.ID)
+		if err != nil {
+			return err
+		}
+
+		for _, monthlyExpectedPayment := range monthlyExpectedPayments {
+			_, err := q.CreateExpectedPayment(ctx, db.CreateExpectedPaymentParams{
+				Name:    monthlyExpectedPayment.Name,
+				Amount:  monthlyExpectedPayment.Amount,
+				Date:    time.Date(month.Date.Year(), month.Date.Month(), int(monthlyExpectedPayment.Day), 0, 0, 0, 0, month.Date.Location()),
+				MonthID: month.ID,
 			})
 
 			if err != nil {

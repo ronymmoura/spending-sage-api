@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=123
+    ports:
+      - "5432:5432"
+    volumes:
+      - data-volume:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_SOURCE=postgresql://root:123@postgres:5432/spending_sage?sslmode=disable
+      - GIN_MODE=release
+    depends_on:
+      - postgres
+    entrypoint: [
+        "/app/start.sh"
+      ]
+    command: [ "/app/main" ]
+volumes:
+  data-volume:

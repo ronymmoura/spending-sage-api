@@ -11,31 +11,41 @@ import (
 type Querier interface {
 	CountMonths(ctx context.Context, userID int64) (int64, error)
 	CreateCategory(ctx context.Context, name string) (Category, error)
+	CreateExpectedPayment(ctx context.Context, arg CreateExpectedPaymentParams) (ExpectedPayment, error)
 	CreateFixedEntry(ctx context.Context, arg CreateFixedEntryParams) (FixedEntry, error)
 	CreateFixedEntryPaymentHistory(ctx context.Context, arg CreateFixedEntryPaymentHistoryParams) (FixedEntryPaymentHistory, error)
 	CreateMonth(ctx context.Context, arg CreateMonthParams) (Month, error)
 	CreateMonthEntry(ctx context.Context, arg CreateMonthEntryParams) (MonthEntry, error)
+	CreateMonthlyExpectedPayment(ctx context.Context, arg CreateMonthlyExpectedPaymentParams) (MonthlyExpectedPayment, error)
 	CreateOrigin(ctx context.Context, arg CreateOriginParams) (Origin, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	DeleteCategory(ctx context.Context, id int64) error
+	DeleteExpectedPayment(ctx context.Context, id int64) error
 	DeleteFixedEntry(ctx context.Context, id int64) error
 	DeleteFixedEntryPaymentHistory(ctx context.Context, id int64) error
 	DeleteMonth(ctx context.Context, id int64) error
 	DeleteMonthEntry(ctx context.Context, id int64) error
+	DeleteMonthlyExpectedPayment(ctx context.Context, id int64) error
 	DeleteOrigin(ctx context.Context, id int64) error
 	DeleteUser(ctx context.Context, id int64) error
+	EditExpectedPayment(ctx context.Context, arg EditExpectedPaymentParams) (ExpectedPayment, error)
 	EditFixedEntry(ctx context.Context, arg EditFixedEntryParams) (FixedEntry, error)
 	EditMonthEntry(ctx context.Context, arg EditMonthEntryParams) (MonthEntry, error)
+	EditMonthlyExpectedPayment(ctx context.Context, arg EditMonthlyExpectedPaymentParams) (MonthlyExpectedPayment, error)
 	GetCategory(ctx context.Context, id int64) (Category, error)
+	GetExpectedPayment(ctx context.Context, limit int32) (ExpectedPayment, error)
 	GetFixedEntry(ctx context.Context, id int64) (FixedEntry, error)
 	GetFixedEntryPaymentHistory(ctx context.Context, id int64) (FixedEntryPaymentHistory, error)
 	GetMonth(ctx context.Context, id int64) (Month, error)
 	GetMonthEntry(ctx context.Context, id int64) (MonthEntry, error)
+	GetMonthlyExpectedPayment(ctx context.Context, id int64) (MonthlyExpectedPayment, error)
 	GetOrigin(ctx context.Context, id int64) (Origin, error)
 	GetUser(ctx context.Context, id int64) (User, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	ListCategories(ctx context.Context) ([]Category, error)
+	ListExpectedPayments(ctx context.Context, monthID int64) ([]ExpectedPayment, error)
 	ListFixedEntryPaymentHistory(ctx context.Context, entryID int64) ([]FixedEntryPaymentHistory, error)
+	ListMonthlyExpectedPayments(ctx context.Context, userID int64) ([]MonthlyExpectedPayment, error)
 	ListMonths(ctx context.Context, arg ListMonthsParams) ([]Month, error)
 	ListOrigins(ctx context.Context) ([]Origin, error)
 	PayEntry(ctx context.Context, arg PayEntryParams) (MonthEntry, error)

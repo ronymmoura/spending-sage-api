@@ -99,6 +99,9 @@ func (server *Server) setupRouter() {
 	protectedRoutes.POST("/fixedEntries", server.CreateFixedEntryRoute)
 	protectedRoutes.PUT("/fixedEntries/:fixed_entry_id", server.EditFixedEntryRoute)
 
+	protectedRoutes.GET("/monthlyExpectedPayments", server.ListMonthlyExpectedPaymentsRoute)
+	protectedRoutes.POST("/monthlyExpectedPayments", server.CreateMonthlyExpectedPaymentRoute)
+
 	server.Router = router
 }
 

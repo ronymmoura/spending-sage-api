@@ -13,6 +13,14 @@ type Category struct {
 	Name string `json:"name"`
 }
 
+type ExpectedPayment struct {
+	ID      int64     `json:"id"`
+	Name    string    `json:"name"`
+	Amount  int32     `json:"amount"`
+	Date    time.Time `json:"date"`
+	MonthID int64     `json:"month_id"`
+}
+
 type FixedEntry struct {
 	ID         int64     `json:"id"`
 	UserID     int64     `json:"user_id"`
@@ -50,6 +58,14 @@ type MonthEntry struct {
 	Owner      string     `json:"owner"`
 	OriginID   int64      `json:"origin_id"`
 	CategoryID int64      `json:"category_id"`
+}
+
+type MonthlyExpectedPayment struct {
+	ID     int64  `json:"id"`
+	Name   string `json:"name"`
+	Amount int32  `json:"amount"`
+	Day    int16  `json:"day"`
+	UserID int64  `json:"user_id"`
 }
 
 type Origin struct {
